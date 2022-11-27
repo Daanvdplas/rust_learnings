@@ -1,0 +1,37 @@
+- using split() with multiple characters => split(&['-', "-"])
+
+- Convert IP address str:    ip.split(".").map(|x| x.parse::<u8>().unwrap()).fold(0, |acc, byte| (acc << 8) + byte as u32)
+
+- Ranges in rust:
+1..2;   // std::ops::Range
+3..;    // std::ops::RangeFrom
+..4;    // std::ops::RangeTo
+..;     // std::ops::RangeFull
+5..=6;  // std::ops::RangeInclusive
+..=7;   // std::ops::RangeToInclusive
+
+- (1..=gcd)
+    .find(|x| l.iter().all(|(number, denom)| (number * x) % denom == 0))
+    .unwrap();    
+
+- s.chars().filter(|c| if "aeiou".contains(c.to_ascii_lowercase()) {false} else {true})
+    .collect();
+
+-  for i in 3..n {
+        let sum = &res[i - 3..i].iter().sum();    -> taking a certain slice of a vec    
+        res.push(*sum);
+    }
+
+- ref keyword
+
+    fn main() {
+    let maybe_name = Some(String::from("Alice"));
+    // Using `ref`, the value is borrowed, not moved ...
+    match maybe_name {
+        Some(ref n) => println!("Hello, {n}"),
+        _ => println!("Hello, world"),
+    }
+    // ... so it's available here!
+    // Without ref this wouldn't be possible!
+    println!("Hello again, {}", maybe_name.unwrap_or("world".into()));
+    }

@@ -1,0 +1,519 @@
+5. Using Structs to Structure Related Data
+    Unlike with tuples, in a struct you’ll name each piece of data so it’s clear what the values mean. Adding these names means that structs are more flexible than tuples: you don’t have to rely on 
+    the order of the data to specify or access the values of an instance.
+
+    5.1 Defining and Instantiating Structs
+
+        fn build_user(email: String, username: String) -> User {
+            User {
+                email,
+                username,
+                active: true,
+                sign_in_count: 1,
+            }
+        }
+
+         let user2 = User {
+            email: String::from("another@example.com"),
+            ..user1
+        };
+
+        Tuple structs have the added meaning the struct name provides but don’t have names associated with their fields; rather, they just have the types of the fields. Tuple structs are useful when 
+        you want to give the whole tuple a name and make the tuple a different type from other tuples, and when naming each field as in a regular struct would be verbose or redundant.
+            * struct Color(i32, i32, i32);
+              struct Point(i32, i32, i32);
+
+
+        Unit-like structs can be useful when you need to implement a trait on some type but don’t have any data that you want to store in the type itself.
+
+    5.2 An Example Program Using Structs
+        
+        -
+
+    5.3 Method Syntax
+
+        Methods are defined within the context of a struct or an enum or a trait object, and their first parameter is always self, which represents the instance of the struct the method is being 
+        called on.
+
+        Associated functions don’t have self as their first parameter (and thus are not methods) because they don’t need an instance of the type to work with (String::from()).
+        To call this associated function, we use the :: syntax with the struct name; 
+
+6. Enums and Pattern Matching
+    
+    6.1 Defining and Enum
+
+        Where structs give you a way of grouping together related fields and data, enums give you a way of saying a value is one of a possible set of values.
+
+    6.2 The match Control Flow Construct
+
+        match dice_roll {
+                3 => add_fancy_hat(),
+                7 => remove_fancy_hat(),
+                other => move_player(other),
+            }
+
+        match dice_roll {
+                3 => add_fancy_hat(),
+                7 => remove_fancy_hat(),
+                _ => reroll(),
+            }
+
+    6.3 Concise Control Flow with if let
+
+        let config_max = Some(3u8);
+        if let Some(max) = config_max {
+            println!("The maximum is configured to be {}", max);
+        }
+
+7. Managing Growing Projects with Packages, Crates, and Modules
+    
+    * Packages: A Cargo feature that lets you build, test, and share crates
+    * Crates: A tree of modules that produces a library or executable
+    * Modules and use: Let you control the organization, scope, and privacy of paths
+    * Paths: A way of naming an item, such as a struct, function, or module
+
+    7.1 Packages and Crates
+
+        A crate can come in one of two forms: a binary crate (with a main.rs) or a library crate (lib.rs). A package is a bundle of one or more crates that provides a set of functionality. A package 
+        contains a Cargo.toml file that describes how to build those crates. 
+
+    7.2 Defining Modules to Control Scope and Privacy
+
+        mod <filename> basically means that it implements the code from ./filename.rs. The use key word helps to specify a path to something from a module and makes it easier/cleaner to code.
+
+    7.3 Paths for Referring to an Item in the Module Tree
+        
+        mod front_of_house {
+            pub mod hosting {
+                pub fn add_to_waitlist() {}
+            }
+        }
+
+        pub fn eat_at_restaurant() {
+            // Absolute path
+            crate::front_of_house::hosting::add_to_waitlist();
+
+            // Relative path
+            front_of_house::hosting::add_to_waitlist();
+        }
+
+        fn main() {
+            eat_at_restaurant();
+        }
+
+        * Without pub before mod hosting and fn add_to_waitlist() this program does not compile. So by creating a module, you exclude permission for out-of-scope functions to interact except if it is
+        made public. The pub keyword on a module only lets code in its ancestor modules refer to it, not access its inner code. Because modules are containers, there’s not much we can do by only 
+        making the module public; we need to go further and choose to make one or more of the items within the module public as well.
+
+    7.4 Bringing Paths Into Scope with the use Keyword
+        
+        - use crate::front_of_house::hosting::add_to_waitlist; Will make it possible to run the function in the main like: add_to_waitlist();
+        add use crate::front_of_house::hosting::add_to_waitlist as hallo; Now you can call the same function with hallo();
+
+        - Filename: Cargo.toml
+
+        rand = "0.8.3"
+
+        Adding rand as a dependency in Cargo.toml tells Cargo to download the rand package and any dependencies from crates.io and make rand available to our project. Using 'use' to bring items from
+        their crates into scope.
+        
+        - use std::io;
+        use std::io::Write;                 is the same as ->               use std::io::{self, Write};
+
+        - use std::collections::*;
+
+    7.5 Separating Modules into Different Files
+
+        With the example in 7.3, by creating a file front_of_house.rs with in it:
+
+        pub mod hosting {
+            pub fn add_to_waitlist() {}
+        }
+
+        and in the main.rs:
+
+        mod front_of_house
+
+        use crate::front_of_house::hosting;
+
+        pub fn eat_at_restaurant() {
+            hosting::add_to_waitlist();
+        }
+
+        This would compile.
+        
+        * Once a file is loaded in your module tree using mod other files only need to specify the path to get to the same.
+
+8. Common collections
+    - Vector
+    - String
+    - Hash map
+    More to find at: https://doc.rust-lang.org/std/collections/index.html
+
+    8.1 Storing Lists of Values with Vectors
+
+        Reading elements of vectors:
+        {
+            let v = vec![1, 2, 3, 4, 5];
+
+            let third: &i32 = &v[2];
+            println!("The third element is {}", third);
+
+            let third: Option<&i32> = v.get(2);
+            match third {
+                Some(third) => println!("The third element is {}", third),
+                None => println!("There is no third element."),
+            }
+        }
+
+        * Because a vector can only store the same type you could create a vector that holds an enum that contains multiple types!
+
+        Vector API's: https://doc.rust-lang.org/std/vec/struct.Vec.html
+
+    8.2 Storing UTF-8 Encoded Text with Strings
+        
+        Updating strings by using: 
+        - string1 + &string2
+        - push_str
+        - format!("Hello {}!", name)
+
+        Indexing into strings:
+        You can't index a string because it is UTF-8 encoded. In other words, all characters are possible to store in a string and not all characters (e.g. "ß") require 1 byte of memory space,
+        like the ASCII characters. The way to do it should be:
+        - index with slices "&s[0..4]", in this way you can take a non-ASCII character by grabbing more than one byte.
+        - iterate over the string:
+            per character ".chars()"
+            per byte ".bytes()"
+
+    8.3 Storing Keys with Associated Values in Hash Maps
+
+        * use std::collections::HashMap;
+
+        The type HashMap<K, V> stores a mapping of keys of type K to values of type V using a hashing function, which determines how it places these keys and values into memory.
+        
+        Accessing values in a hash map:
+        - get()
+        - for loop (in an arbitrary order)
+
+        * If we insert a key and a value into a hash map and then insert that same key with a different value, the value associated with that key will be replaced.
+
+        Updating a value based on the old value:
+            use std::collections::HashMap;
+
+            let text = "hello world wonderful world";
+
+            let mut map = HashMap::new();
+
+            for word in text.split_whitespace() {
+                let count = map.entry(word).or_insert(0);
+                *count += 1;
+            }
+
+            println!("{:?}", map);
+            => {"world": 2, "hello": 1, "wonderful": 1}
+
+10. Generic types, traits and lifetimes
+    
+    10.1 Generic data types
+
+11. Writing Automated Tests
+    
+
+    11.1 How to Write Tests
+    11.2 Controlling How Tests Are Run
+    11.3 Test Organization
+
+13. Functional language features: iterators and closures
+    13.1 Closures: Anonynous functions that capture their environment
+
+        Closures can be saved in a variable or passed as arguments to other functions. Unlike functions, closures can capture values from the scope in which they're defined. 
+            - Closure without a parameters: (|| ...)
+            - Closure with parameters: (|x| ...)
+
+        Closures don't require you to annotate the types of the parameters or the return value like fn functions do. It is possible though to specify parameters/output:
+            fn  add_one_v1   (x: u32) -> u32 { x + 1 }
+            let add_one_v2 = |x: u32| -> u32 { x + 1 };
+            let add_one_v3 = |x|             { x + 1 };
+            let add_one_v4 = |x|               x + 1  ;
+
+        If you want to force the closure to take ownership of the values it uses in the environment even though the body of the closure doesn’t strictly need ownership, you can 
+        use the 'move' keyword before the parameter list.
+
+        The way a closure captures and handles values from the environment affects which traits the closure implements, and traits are how functions and structs can specify what 
+        kinds of closures they can use. Closures will automatically implement one, two, or all three of these Fn traits, in an additive fashion, depending on how the closure’s 
+        body handles the values:
+            - FnOnce applies to closures that can be called once. All closures implement at least this trait, because all closures can be called. A closure that moves captured 
+            values out of its body will only implement FnOnce and none of the other Fn traits, because it can only be called once.
+            - FnMut applies to closures that don’t move captured values out of their body, but that might mutate the captured values. These closures can be called more than once.
+            - Fn applies to closures that don’t move captured values out of their body and that don’t mutate captured values, as well as closures that capture nothing from their 
+            environment. These closures can be called more than once without mutating their environment, which is important in cases such as calling a closure multiple times 
+            concurrently.
+
+        13.2 Processing a series of items with iterators
+            
+            You don't have to make a variable 'mut' when you want to iterate over it using a for loop. The for loop takes ownership and does this himself.
+
+            'map' and 'filter' create a new iterator on top of 'iter'. 'filter' creates a new iterator with all the elements that returned true for example.
+
+        13.3 Improving Our I/O Project
+            -
+        13.4 Comparing Performance: Loops vs. Iterators
+            -
+
+14. More about Cargo and Crates.io
+
+    14.1 Customizing Builds with Release Profiles
+        
+        [profile.*] sections in the project’s Cargo.toml file. By adding [profile.*] sections for any profile you want to customize, you override any subset of the default settings.
+
+        [profile.dev]
+        opt-level = 0   (less optimizations)
+
+        [profile.release]
+        opt-level = 3   (many optimizations)    *ranges from 0 - 3 for both, but 1 for dev mode is less optimnized than 1 for release
+
+    14.2 Publishing a Crate to Crates.io
+        
+        Read docs
+
+    14.3 Cargo Workspaces
+        
+        - add to Cargo.toml file: 
+
+        [workspace]
+
+        members = [
+            "adder",
+            "add_one",
+        ]
+
+        - now:
+
+        ├── Cargo.lock
+        ├── Cargo.toml
+        ├── add_one
+        │   ├── Cargo.toml
+        │   └── src
+        │       └── lib.rs
+        ├── adder
+        │   ├── Cargo.toml
+        │   └── src
+        │       └── main.rs
+        └── target
+
+        - only with same target and Cargo.lock file. Now add to adder/Cargo.toml:
+
+        [dependencies]
+        add_one = { path = "../add_one" }
+
+        - and to adder/src/main.rs
+
+        use add_one;
+
+        add_one::add_one();
+
+        - if wanting to use external packages, add the crate in all Cargo.toml as a dependency where you want to use it and bring it in scope as usual.
+
+        - cargo test -p add_one, only do tests in that workspace.
+
+    14.4 Installing Binaries from Crates.io with cargo install
+
+        The cargo install command allows you to install and use binary crates locally. So programs, crates with a main.rs.
+
+        ripgrep is a rust tool that works the same as grep, finding files. Installing it by cargo install ripgrep.
+    14.5 Extending Cargo with Custom Commands
+        
+        Tools located in .cargo/bin
+
+16. Fearless Concurrency
+
+        Concurrent programming, where different parts of a program execute independently.
+        Parallel programming, where different parts of a program execute at the same time.
+
+    16.1 Using Threads to Run Code Simultaneously
+
+        By adding the 'move' keyword before the closure, we force the closure to take ownership of the values it’s using rather than allowing Rust to infer that it 
+        should borrow the values. 
+
+    16.2 Using Message Passing to Transfer Data Between Threads
+        
+        To accomplish message-sending concurrency, Rust's standard library provides an implementation of channels. A channel is a general programming concept by 
+        which data is sent from one thread to another.
+
+        use std::sync::mpsc;
+        use std::thread;
+
+        fn main() {
+            let (tx, rx) = mpsc::channel();
+
+            thread::spawn(move || {
+                let val = String::from("hi");
+                tx.send(val).unwrap();
+            });
+
+            let received = rx.recv().unwrap();
+            println!("Got: {}", received);
+        }
+
+    16.3 Shared-State Concurrency
+
+        Mutex is an abbreviation for mutual exclusion, as in, a mutex allows only one thread to access some data at any given time. To access the data in a mutex, a 
+        thread must first signal that it wants access by asking to acquire the mutex’s lock. The lock is a data structure that is part of the mutex that keeps track of 
+        who currently has exclusive access to the data. Therefore, the mutex is described as guarding the data it holds via the locking system.
+
+        use std::sync::{Arc, Mutex};
+        use std::thread;
+
+        fn main() {
+            let counter = Arc::new(Mutex::new(0));
+            let mut handles = vec![];
+
+            for _ in 0..10 {
+                let counter = Arc::clone(&counter);
+                let handle = thread::spawn(move || {
+                    let mut num = counter.lock().unwrap();
+
+                    *num += 1;
+                });
+                handles.push(handle);
+            }
+
+            for handle in handles {
+                handle.join().unwrap();
+            }
+
+            println!("Result: {}", *counter.lock().unwrap());
+        }
+
+    16.4 Extensible Concurrency with the Sync and Send Traits
+        
+19. Advanced features
+    19.1 Unsafe Rust
+    19.2 Advanced Traits
+    19.3 Advanced Types
+    19.4 Advanced Funtions and Closures
+    19.5 Macros
+        
+        - 'derive' attribute, which generates an implementation of various traits
+
+        # The declarative macro , Macros by example:
+        - vec![1, 2, 3] turns into: 
+            #[macro_export]                                             -> macro available whenever the crate where macro is defined is brought into scope
+            macro_rules! vec {
+                ( $( $x:expr ),* ) => {                                 -> $ to declare a variable, $x:expr matches a rust expression and gives name $x,
+                    {                                                       the comma indicates a literal comma could appear, the * means zero or more of 
+                        let mut temp_vec = Vec::new();                      whatever precedes.
+                        $(
+                            temp_vec.push($x);
+                        )*
+                        temp_vec
+                    }
+                };
+            }
+            
+            turns into:
+            {
+                let mut temp_vec = Vec::new();
+                temp_vec.push(1);
+                temp_vec.push(2);
+                temp_vec.push(3);
+                temp_vec
+            }
+
+            # The procedural macro:
+            - custom derive, attritbute-like and function-like
+            
+            * Custom derive example: the HelloMacro trait:
+
+            use hello_macro::HelloMacro;
+            use hello_macro_derive::HelloMacro;
+
+            #[derive(HelloMacro)]
+            struct Pancakes;
+
+            fn main() {
+                Pancakes::hello_macro();
+            }
+
+            - To have this working we need: 
+
+            cargo new hello_macro --lib
+            
+            src/lib.rs:
+            pub trait HelloMacro {
+                fn hello_macro();
+            }
+
+            - Within this we need:
+
+            cargo new hello_macro_derive --lib
+
+            Cargo.toml:
+            [lib]
+            proc-macro = true
+
+            [dependencies]
+            syn = "1.0"
+            quote = "1.0"
+
+            hello_macro_derives/srs/lib.rs:
+            use proc_macro::TokenStream;                -> compiler's API that allows us to read and manipulate Rust code from our code
+            use syn;                                    -> parses rust code from a string into data structure that we can perform operations on, returns 
+                                                            DeriveInput struct
+            use quote::quote;                           -> turns syn data structures back into Rust code
+
+
+            #[proc_macro_derive(HelloMacro)]
+            pub fn hello_macro_derive(input: TokenStream) -> TokenStream {
+                // Construct a representation of Rust code as a syntax tree
+                // that we can manipulate
+                let ast = syn::parse(input).unwrap();
+
+                // Build the trait implementation
+                impl_hello_macro(&ast)
+            }
+
+            fn impl_hello_macro(ast: &syn::DeriveInput) -> TokenStream {
+                let name = &ast.ident;
+                let gen = quote! {
+                    impl HelloMacro for #name {
+                        fn hello_macro() {
+                            println!("Hello, Macro! My name is {}!", stringify!(#name));
+                        }
+                    }
+                };
+                gen.into()
+            }
+
+            - last thing to do:
+
+            add to Cargo.toml file:
+            hello_macro = { path = "../hello_macro" }
+            hello_macro_derive = { path = "../hello_macro/hello_macro_derive" }
+
+            * Attribute-like macros:
+
+            #[route(GET, "/")]
+            fn index() {
+
+            #[proc_macro_attribute]
+            pub fn route(attr: TokenStream, item: TokenStream) -> TokenStream {
+
+            * Function-like macros
+            let sql = sql!(SELECT * FROM posts WHERE id=1);
+
+            #[proc_macro]
+            pub fn sql(input: TokenStream) -> TokenStream {
+
+
+
+
+
+
+
+
+
+
+
+
+
