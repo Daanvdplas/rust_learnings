@@ -1,0 +1,1 @@
+/Users/parity/Documents/macro_example/target/debug/macro_example: /Users/parity/Documents/macro_example/hello_macro/hello_macro_derive/src/lib.rs /Users/parity/Documents/macro_example/hello_macro/src/lib.rs /Users/parity/Documents/macro_example/src/main.rs

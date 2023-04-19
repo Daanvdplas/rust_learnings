@@ -35,3 +35,31 @@
     // Without ref this wouldn't be possible!
     println!("Hello again, {}", maybe_name.unwrap_or("world".into()));
     }
+
+- nice solution:
+    fn order_weight(s: &str) -> String {
+      let mut numbers = s.split_whitespace().collect::<Vec<_>>();
+      numbers.sort();
+      numbers.sort_by_key(|s| s.chars().flat_map(|c| c.to_digit(10)).sum::<u32>());
+      numbers.join(" ")
+    }
+    * difference between map and flat_map is flat_map flattens nested structure:
+    let words = ["alpha", "beta", "gamma"];
+
+    // chars() returns an iterator
+    let merged: String = words.iter()
+                              .flat_map(|s| s.chars())
+                              .collect();
+    assert_eq!(merged, "alphabetagamma");
+
+- when printing with zero's (e.g. 23:01:04):
+    res = 1;
+    format!("{res:02}");
+
+- Using enumerate without for loop and repeat() and join():
+    fn accum(s:&str)->String {
+    s.chars().enumerate()
+        .map(|(i,c)|c.to_string().to_uppercase() + c.to_string().to_lowercase().repeat(i).as_str())
+        .collect::<Vec<String>>()
+        .join("-")
+    }

@@ -1,0 +1,12 @@
+/Users/parity/Documents/macro_example/hello_macro/hello_macro_derive/target/debug/deps/proc_macro2-9b584c05280ff133.rmeta: /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/lib.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/marker.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/parse.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/rcvec.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/detection.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/fallback.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/extra.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/wrapper.rs
+
+/Users/parity/Documents/macro_example/hello_macro/hello_macro_derive/target/debug/deps/proc_macro2-9b584c05280ff133.d: /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/lib.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/marker.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/parse.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/rcvec.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/detection.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/fallback.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/extra.rs /Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/wrapper.rs
+
+/Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/lib.rs:
+/Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/marker.rs:
+/Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/parse.rs:
+/Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/rcvec.rs:
+/Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/detection.rs:
+/Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/fallback.rs:
+/Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/extra.rs:
+/Users/parity/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/wrapper.rs:

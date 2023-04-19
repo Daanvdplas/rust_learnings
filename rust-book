@@ -213,12 +213,14 @@
             => {"world": 2, "hello": 1, "wonderful": 1}
 
 10. Generic types, traits and lifetimes
+
+    
     
     10.1 Generic data types
 
 11. Writing Automated Tests
     
-
+    
     11.1 How to Write Tests
     11.2 Controlling How Tests Are Run
     11.3 Test Organization
@@ -392,6 +394,22 @@
     19.2 Advanced Traits
     19.3 Advanced Types
     19.4 Advanced Funtions and Closures
+
+        
+        fn add_one(x: i32) -> i32 {
+            x + 1
+        }
+
+        fn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {
+            f(arg) + f(arg)
+        }
+
+        fn main() {
+            let answer = do_twice(add_one, 5);
+
+            println!("The answer is: {}", answer);
+        }
+
     19.5 Macros
         
         - 'derive' attribute, which generates an implementation of various traits
